@@ -72,5 +72,7 @@
   { "id": "mt2", "name": "Luciano Amaral", "nickname": "Lucas", "year": 2024, "contact": "81911111112", "category": "Equipe", "team": "Dirigentes de montagem", "instagram": "luciano_monta", "photoUrl": "https://i.pravatar.cc/150?u=mt2" },
   { "id": "mt3", "name": "Cassio Ramos", "nickname": "Cassio", "year": 2024, "contact": "81911111113", "category": "Equipe", "team": "Dirigentes de montagem", "instagram": "cassio_ejc", "photoUrl": "https://i.pravatar.cc/150?u=mt3" },
   { "id": "mt4", "name": "Hulk Paraíba", "nickname": "Hulk", "year": 2024, "contact": "81911111114", "category": "Equipe", "team": "Dirigentes de montagem", "instagram": "hulk_montagem", "photoUrl": "https://i.pravatar.cc/150?u=mt4" },
-  { "id": "mt5", "name": "Gabigol Almeida", "nickname": "Gabi", "year": 2024, "contact": "81911111115", "category": "Equipe", "team": "Dirigentes de montagem", "instagram": "gabigol_ejc", "photoUrl": "https://i.pravatar.cc/150?u=mt5" }
+  { "id": "mt5", "name": "Gabigol Almeida", "nickname": "Gabi", "year": 2024, "contact": "81911111115", "category": "Equipe", "team": "Dirigentes de montagem", "instagram": "gabigol_ejc", "photoUrl": "https://i.pravatar.cc/150?u=mt5" },
+  
+  { "id": "gf1", "name": "Sérgio Mallandro 2", "nickname": "Mallandro2", "year": 2024, "contact": "81900000005", "category": "Equipe", "team": "Grafica", "instagram": "ie_ie_ejc", "photoUrl": "https://i.pravatar.cc/150?u=sl5" }
 ]
