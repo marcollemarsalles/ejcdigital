@@ -1,6 +1,6 @@
 
 [
-  { "id": "1", "name": "Semente da Fé", "description": "Participou do seu primeiro Encontro de Jovens com Cristo.", "rarity": "Comum", "icon": "https://i.postimg.cc/wxnCXVXD/SEMENTE.jpg" },
+  { "id": "1", "name": "Semente da Fé", "description": "Participou do seu primeiro Encontro de Jovens com Cristo.", "rarity": "Comum", "icon": "https://i.postimg.cc/RVbZHF4Z/SEMENTE.png" },
   { "id": "2", "name": "Raiz da Esperança", "description": "Permaneceu firme no EJC após o encontro inicial.", "rarity": "Comum", "icon": "Leaf" },
   { "id": "3", "name": "Lâmpada da Palavra", "description": "Participou de formações ou estudos bíblicos.", "rarity": "Comum", "icon": "BookOpen" },
   { "id": "4", "name": "Caminho da Verdade", "description": "Viveu a fé de forma coerente no dia a dia.", "rarity": "Comum", "icon": "Compass" },
@@ -26,7 +26,7 @@
   { "id": "24", "name": "Aliança Renovada", "description": "Reafirmou seu compromisso com Deus.", "rarity": "Comum", "icon": "Infinity" },
   { "id": "25", "name": "Testemunho de Fé", "description": "Inspirou outros pela sua caminhada cristã.", "rarity": "Comum", "icon": "Users" },
 
-  { "id": "26", "name": "Chama do Serviço", "description": "Serviu em uma equipe durante o Encontro.", "rarity": "Rara", "icon": "https://i.postimg.cc/8kx2RHRM/CHAMA.jpg" },
+  { "id": "26", "name": "Chama do Serviço", "description": "Serviu em uma equipe durante o Encontro.", "rarity": "Rara", "icon": "https://i.postimg.cc/hP3tdjcj/CHAMA.png" },
   { "id": "27", "name": "Mãos Disponíveis", "description": "Ajudou sempre que foi solicitado.", "rarity": "Rara", "icon": "Hand" },
   { "id": "28", "name": "Pés no Caminho", "description": "Serviu com alegria e prontidão.", "rarity": "Rara", "icon": "Footprints" },
   { "id": "29", "name": "Coração Servo", "description": "Colocou-se a serviço do próximo.", "rarity": "Rara", "icon": "Heart" },
@@ -52,7 +52,7 @@
   { "id": "49", "name": "Mãos que Constroem", "description": "Ajudou a edificar a comunidade.", "rarity": "Rara", "icon": "Home" },
   { "id": "50", "name": "Serviço Consagrado", "description": "Ofereceu seu trabalho a Deus.", "rarity": "Rara", "icon": "Church" },
 
-  { "id": "51", "name": "Coroa da Liderança", "description": "Assumiu a coordenação de uma equipe ou círculo do EJC.", "rarity": "Épica", "icon": "https://i.postimg.cc/mZKvYwY9/COROA.jpg" },
+  { "id": "51", "name": "Coroa da Liderança", "description": "Assumiu a coordenação de uma equipe ou círculo do EJC.", "rarity": "Épica", "icon": "https://i.postimg.cc/yYr8Zdsx/COROA.png" },
   { "id": "52", "name": "Bastão do Pastor", "description": "Conduziu pessoas com responsabilidade.", "rarity": "Épica", "icon": "GripVertical" },
   { "id": "53", "name": "Voz da Unidade", "description": "Promoveu harmonia no grupo.", "rarity": "Épica", "icon": "Mic2" },
   { "id": "54", "name": "Exemplo Vivo", "description": "Liderou pelo testemunho.", "rarity": "Épica", "icon": "UserCheck" },
@@ -78,7 +78,7 @@
   { "id": "74", "name": "Servo que Guia", "description": "Uniu liderança e serviço.", "rarity": "Épica", "icon": "Users" },
   { "id": "75", "name": "Guardião da Missão", "description": "Protegeu os valores do EJC.", "rarity": "Épica", "icon": "Key" },
 
-  { "id": "76", "name": "Passos Firmes", "description": "Não abandonou a caminhada cristã.", "rarity": "Lendária", "icon": "https://i.postimg.cc/h4NkLrLx/CHAVE.jpg" },
+  { "id": "76", "name": "Passos Firmes", "description": "Não abandonou a caminhada cristã.", "rarity": "Lendária", "icon": "https://i.postimg.cc/bNFwtJpv/CHAVE.png" },
   { "id": "77", "name": "Constância Cristã", "description": "Manteve presença ativa na comunidade.", "rarity": "Lendária", "icon": "Infinity" },
   { "id": "78", "name": "Fidelidade no Tempo", "description": "Continuou mesmo após dificuldades.", "rarity": "Lendária", "icon": "History" },
   { "id": "79", "name": "Raiz Profunda", "description": "Criou vínculo duradouro com o EJC.", "rarity": "Lendária", "icon": "Trees" }

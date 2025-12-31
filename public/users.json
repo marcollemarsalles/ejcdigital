@@ -73,9 +73,9 @@
   {
     "id": "u4",
     "email": "mariasilva@ejc.com",
-    "password": "123",
-    "name": "Maria da Silva",
-    "nickname": "Mariazinha",
+    "password": "1234",
+    "name": "Maria da Conceição",
+    "nickname": "Maria C",
     "role": "Coordenador",
     "currentTeam": "Coordenação Geral",
     "points": 946,
