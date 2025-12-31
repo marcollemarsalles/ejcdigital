@@ -1,44 +1,28 @@
-
 import React, { useState } from 'react';
-import { AlertCircle, Loader2, ShieldCheck, Terminal, Link as LinkIcon } from 'lucide-react';
+import { AlertCircle, Loader2, ShieldCheck, Link as LinkIcon } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (userData: any) => void;
 }
 
 const MOCK_USER = {
-  "id": "u4",
-  "email": "mariasilva@ejc.com",
-  "password": "123",
-  "name": "Maria da Silva",
-  "nickname": "Mariazinha",
-  "role": "Coordenador",
-  "currentTeam": "Coordenação Geral",
-  "points": 946,
-  "photoUrl": "https://picsum.photos/200/300",
-  "relics": [
-    { "id": "2", "unlockedAt": "2022-06-15" },
-    { "id": "3", "unlockedAt": "2023-02-20" },
-    { "id": "5", "unlockedAt": "2023-08-05" },
-    { "id": "1", "unlockedAt": "2023-05-15" },
-    { "id": "26", "unlockedAt": "2023-11-20" },
-    { "id": "51", "unlockedAt": "2024-02-12" },
-    { "id": "76", "unlockedAt": "2024-10-09" },
-    { "id": "70", "unlockedAt": "2024-10-09" },
-    { "id": "49", "unlockedAt": "2024-10-09" }
-  ],
-  "history": [
-    { "team": "Coordenação", "year": 2025 },
-    { "team": "Palestra", "year": 2024 },
-    { "team": "Bandinha", "year": 2023 },
-    { "team": "Encontrista", "year": 2022 }
-  ]
+  id: "u4",
+  email: "mariasilva@ejc.com",
+  password: "123",
+  name: "Maria da Silva",
+  nickname: "Mariazinha",
+  role: "Coordenador",
+  currentTeam: "Coordenação Geral",
+  points: 946,
+  photoUrl: "https://picsum.photos/200/300",
+  relics: [],
+  history: []
 };
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<{msg: string, url?: string} | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,118 +30,93 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     setError(null);
     setIsLoading(true);
 
-    if (email.toLowerCase() === MOCK_USER.email.toLowerCase() && password === MOCK_USER.password) {
+    // 🔐 Login de emergência
+    if (
+      email.toLowerCase() === MOCK_USER.email.toLowerCase() &&
+      password === MOCK_USER.password
+    ) {
       const { password: _, ...userData } = MOCK_USER;
       localStorage.setItem('ejc_user', JSON.stringify(userData));
       setTimeout(() => onLogin(userData), 500);
       return;
     }
 
-    // Define o caminho do arquivo
-    const filePath = './users.json';
-    const absoluteUrl = new URL(filePath, window.location.href).href;
-
     try {
-      const response = await fetch(filePath);
-      
+      // ✅ Caminho correto para Vercel
+      const response = await fetch("/users.json");
+
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(`HTTP ${response.status}`);
       }
 
       const users = await response.json();
+
       const user = users.find(
-        (u: any) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+        (u: any) =>
+          u.email.toLowerCase() === email.toLowerCase() &&
+          u.password === password
       );
 
-      if (user) {
-        const { password: _, ...userData } = user;
-        localStorage.setItem('ejc_user', JSON.stringify(userData));
-        setTimeout(() => onLogin(userData), 800);
-      } else {
-        setError({ msg: 'E-mail ou senha incorretos.' });
+      if (!user) {
+        setError("E-mail ou senha incorretos.");
         setIsLoading(false);
+        return;
       }
-    } catch (err: any) {
-      console.error('Erro de Autenticação:', err);
-      setError({ 
-        msg: `Falha técnica: ${err.message}`, 
-        url: absoluteUrl 
-      });
+
+      const { password: _, ...userData } = user;
+      localStorage.setItem('ejc_user', JSON.stringify(userData));
+      setTimeout(() => onLogin(userData), 800);
+
+    } catch (err) {
+      console.error(err);
+      setError("Falha técnica ao acessar o banco de dados.");
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-6">
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border border-slate-100">
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-20 h-20 bg-emerald-600 rounded-2xl flex items-center justify-center text-white font-bold text-4xl mb-4 shadow-lg shadow-emerald-200">
-            E
-          </div>
-          <h1 className="text-2xl font-bold text-slate-800">EJC Digital</h1>
-          <p className="text-slate-500 text-sm mt-1">Gestão de Serviços</p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
+        <h1 className="text-2xl font-bold text-center mb-6">EJC Digital</h1>
 
         {error && (
-          <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex flex-col gap-2 text-rose-600 text-sm">
-            <div className="flex items-center gap-3">
-              <AlertCircle size={18} className="flex-shrink-0" />
-              <span className="font-bold">{error.msg}</span>
-            </div>
-            {error.url && (
-              <div className="mt-2 bg-slate-900 text-slate-300 p-3 rounded-xl font-mono text-[9px] break-all border border-slate-800">
-                <div className="flex items-center gap-2 mb-1 text-slate-500 uppercase font-black tracking-tighter">
-                  <LinkIcon size={10} /> URL Tentada:
-                </div>
-                {error.url}
-              </div>
-            )}
-            <p className="text-[10px] opacity-70 italic mt-1">
-              Dica: Verifique se o arquivo "users.json" foi enviado para a pasta raiz do servidor.
-            </p>
+          <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-600 text-sm flex gap-2 items-center">
+            <AlertCircle size={18} />
+            {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">E-mail</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-slate-900 text-white border border-slate-800 focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm"
-              placeholder="exemplo@email.com"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">Senha</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-slate-900 text-white border border-slate-800 focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm"
-              placeholder="••••••••"
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="email"
+            placeholder="E-mail"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl bg-slate-900 text-white"
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl bg-slate-900 text-white"
+            required
+          />
+
           <button
-            type="submit"
             disabled={isLoading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70"
+            className="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold flex justify-center"
           >
-            {isLoading ? <Loader2 size={20} className="animate-spin" /> : 'Entrar'}
+            {isLoading ? <Loader2 className="animate-spin" /> : "Entrar"}
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-slate-100">
-          <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex gap-3 items-center">
-            <ShieldCheck size={20} className="text-amber-600 shrink-0" />
-            <div className="text-[10px] text-amber-800 leading-tight">
-              <strong>Acesso de Emergência:</strong><br />
-              Email: <em>mariasilva@ejc.com</em> | Senha: <em>123</em>
-            </div>
-          </div>
+        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs">
+          <ShieldCheck size={16} className="inline mr-1" />
+          <strong>Acesso emergência:</strong><br />
+          mariasilva@ejc.com / 123
         </div>
       </div>
     </div>
