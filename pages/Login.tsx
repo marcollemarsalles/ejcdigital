@@ -134,8 +134,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex gap-3 items-center">
             <ShieldCheck size={20} className="text-amber-600 shrink-0" />
             <div className="text-[10px] text-amber-800 leading-tight">
-              <strong>Acesso de Emergência:</strong><br />
-              Email: <em>mariasilva@ejc.com</em> | Senha: <em>123</em>
+              <strong>Todos os direitos reservado a DEUS!</strong><br />
             </div>
           </div>
         </div>
