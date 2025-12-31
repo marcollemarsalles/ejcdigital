@@ -1,10 +1,39 @@
 
 import React, { useState } from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (userData: any) => void;
 }
+
+const MOCK_USER = {
+  "id": "u4",
+  "email": "mariasilva@ejc.com",
+  "password": "123",
+  "name": "Maria da Silva",
+  "nickname": "Mariazinha",
+  "role": "Coordenador",
+  "currentTeam": "Coordenação Geral",
+  "points": 946,
+  "photoUrl": "https://picsum.photos/200/300",
+  "relics": [
+    { "id": "2", "unlockedAt": "2022-06-15" },
+    { "id": "3", "unlockedAt": "2023-02-20" },
+    { "id": "5", "unlockedAt": "2023-08-05" },
+    { "id": "1", "unlockedAt": "2023-05-15" },
+    { "id": "26", "unlockedAt": "2023-11-20" },
+    { "id": "51", "unlockedAt": "2024-02-12" },
+    { "id": "76", "unlockedAt": "2024-10-09" },
+    { "id": "70", "unlockedAt": "2024-10-09" },
+    { "id": "49", "unlockedAt": "2024-10-09" }
+  ],
+  "history": [
+    { "team": "Coordenação", "year": 2025 },
+    { "team": "Palestra", "year": 2024 },
+    { "team": "Bandinha", "year": 2023 },
+    { "team": "Encontrista", "year": 2022 }
+  ]
+};
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -17,29 +46,48 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     setError(null);
     setIsLoading(true);
 
+    // 1. Verificar primeiro o usuário mockado (Fallback de Emergência)
+    if (email.toLowerCase() === MOCK_USER.email.toLowerCase() && password === MOCK_USER.password) {
+      const { password: _, ...userData } = MOCK_USER;
+      localStorage.setItem('ejc_user', JSON.stringify(userData));
+      setTimeout(() => {
+        onLogin(userData);
+      }, 500);
+      return;
+    }
+
     try {
-      const response = await fetch('./users.json');
-      const users = await response.json();
+      const response = await fetch('users.json');
+      
+      if (!response.ok) {
+        throw new Error(`Erro de servidor: ${response.status}`);
+      }
+
+      let users;
+      try {
+        users = await response.json();
+      } catch (parseError) {
+        console.error('Erro ao processar JSON:', parseError);
+        throw new Error('Banco de dados corrompido.');
+      }
 
       const user = users.find(
         (u: any) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
       );
 
       if (user) {
-        // Removemos a senha antes de salvar por segurança
-        const { password, ...userData } = user;
+        const { password: _, ...userData } = user;
         localStorage.setItem('ejc_user', JSON.stringify(userData));
-        
         setTimeout(() => {
           onLogin(userData);
         }, 800);
       } else {
-        setError('E-mail ou senha incorretos. Tente novamente.');
+        setError('E-mail ou senha incorretos.');
         setIsLoading(false);
       }
-    } catch (err) {
-      console.error('Erro ao autenticar:', err);
-      setError('Erro ao conectar com o servidor de autenticação.');
+    } catch (err: any) {
+      console.error('Erro na autenticação:', err);
+      setError('Erro ao conectar. Tente o usuário de teste (mariasilva@ejc.com / 123)');
       setIsLoading(false);
     }
   };
@@ -57,7 +105,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
         {error && (
           <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm animate-in fade-in slide-in-from-top-2">
-            <AlertCircle size={18} />
+            <AlertCircle size={18} className="flex-shrink-0" />
             <span className="font-medium">{error}</span>
           </div>
         )}
@@ -103,9 +151,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+        <div className="mt-8 pt-6 border-t border-slate-100">
+          <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex gap-3 items-center">
+            <ShieldCheck size={20} className="text-amber-600 shrink-0" />
+            <div className="text-[10px] text-amber-800 leading-tight">
+              <strong>Acesso de Emergência:</strong><br />
+              Se o servidor falhar, use: <em>mariasilva@ejc.com</em> / <em>123</em>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
           <p className="text-sm text-slate-500">
-            Problemas com o acesso? <button className="text-emerald-600 font-semibold">Falar com TI</button>
+            Problemas com o acesso? <button className="text-emerald-600 font-semibold" onClick={() => window.location.reload()}>Atualizar Página</button>
           </p>
         </div>
       </div>

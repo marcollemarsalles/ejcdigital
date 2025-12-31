@@ -1,4 +1,3 @@
-
 [
   {
     "id": "u1",
@@ -63,7 +62,6 @@
       { "id": "76", "unlockedAt": "2024-10-09" },
       { "id": "70", "unlockedAt": "2024-10-09" },
       { "id": "49", "unlockedAt": "2024-10-09" }
-
     ],
     "history": [
       { "team": "Coordenação", "year": 2025 },
@@ -72,7 +70,7 @@
       { "team": "Encontrista", "year": 2022 }
     ]
   },
-    {
+  {
     "id": "u4",
     "email": "mariasilva@ejc.com",
     "password": "123",
@@ -92,7 +90,6 @@
       { "id": "76", "unlockedAt": "2024-10-09" },
       { "id": "70", "unlockedAt": "2024-10-09" },
       { "id": "49", "unlockedAt": "2024-10-09" }
-
     ],
     "history": [
       { "team": "Coordenação", "year": 2025 },
