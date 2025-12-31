@@ -72,3 +72,30 @@ export interface UserProfile {
   relics: { id: string; unlockedAt: string }[];
   photoUrl: string;
 }
+
+export interface LiturgyData {
+  data: string;
+  liturgia: string;
+  cor: string;
+  dia: string;
+  primeiraLeitura: {
+    referencia: string;
+    titulo: string;
+    texto: string;
+  };
+  segundaLeitura?: {
+    referencia: string;
+    titulo: string;
+    texto: string;
+  };
+  salmo: {
+    referencia: string;
+    refrao: string;
+    texto: string;
+  };
+  evangelho: {
+    referencia: string;
+    titulo: string;
+    texto: string;
+  };
+}

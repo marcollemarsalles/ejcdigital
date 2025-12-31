@@ -86,7 +86,7 @@ const Listao: React.FC = () => {
             <p className="text-slate-500 text-sm">Diretório de membros e equipes do encontro.</p>
           </div>
           <div className="bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-            <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">{filteredMembers.length} Encontrados</span>
+            <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">{filteredMembers.length} Pessoas</span>
           </div>
         </div>
 
