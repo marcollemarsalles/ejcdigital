@@ -14,7 +14,7 @@ const Listao: React.FC = () => {
   useEffect(() => {
     const loadMembers = async () => {
       try {
-        const response = await fetch('./members.json');
+        const response = await fetch('/members.json');
         const data = await response.json();
         setMembers(data);
       } catch (error) {
@@ -90,7 +90,7 @@ const Listao: React.FC = () => {
           </div>
         </div>
 
-        {/* Search Bar com Texto Branco e Fundo Escuro */}
+        {/* Search Bar */}
         <div className="flex flex-col md:flex-row gap-3">
           <div className="flex-1 relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -121,7 +121,7 @@ const Listao: React.FC = () => {
           ))}
         </div>
 
-        {/* Sub-Filters (Contextual) */}
+        {/* Sub-Filters */}
         {category !== 'Todos' && (
           <div className="pt-2 animate-in fade-in slide-in-from-top-2 duration-300">
             {category === 'Encontrista' ? (
@@ -163,27 +163,16 @@ const Listao: React.FC = () => {
         )}
       </section>
 
-      {/* Members Grid */}
+      {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredMembers.length > 0 ? (
           filteredMembers.map(member => (
-            <div key={member.id} className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex items-start gap-4 hover:border-emerald-200 transition-all group">
+            <div key={member.id} className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex items-start gap-4 group">
               <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 shadow-sm flex-shrink-0 overflow-hidden ${getTeamBadgeClasses(member)}`}>
                 <img 
                   src={member.photoUrl} 
                   alt={member.nickname}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent && !parent.querySelector('.fallback-initial')) {
-                      const initialSpan = document.createElement('span');
-                      initialSpan.className = 'fallback-initial font-black text-xl';
-                      initialSpan.innerText = member.nickname.charAt(0).toUpperCase();
-                      parent.appendChild(initialSpan);
-                    }
-                  }}
                 />
               </div>
               
@@ -224,32 +213,9 @@ const Listao: React.FC = () => {
           ))
         ) : (
           <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-slate-200">
-            <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
-              <Users size={32} />
-            </div>
-            <p className="text-slate-400 font-medium italic">Nenhum membro encontrado com estes filtros.</p>
-            <button 
-              onClick={() => {
-                setCategory('Todos');
-                setSearchTerm('');
-                setSelectedSubFilter('Todos');
-              }}
-              className="mt-4 text-emerald-600 text-xs font-bold uppercase tracking-widest hover:underline"
-            >
-              Limpar Filtros
-            </button>
+            <p className="text-slate-400 font-medium italic">Nenhum membro encontrado.</p>
           </div>
         )}
-      </div>
-
-      <div className="bg-emerald-600 rounded-3xl p-8 text-center text-white shadow-lg shadow-emerald-200 overflow-hidden relative">
-        <div className="absolute top-0 right-0 p-4 opacity-10">
-          <BookOpen size={120} />
-        </div>
-        <h3 className="text-xl font-bold mb-2 relative z-10">EJC é mesmo assim, foi Deus quem quis isso pra mim!</h3>
-        <p className="text-emerald-100 text-sm leading-relaxed max-w-md mx-auto relative z-10">
-          Este listão é uma ferramenta para manter a união de toda a comunidade EJC. O serviço flui através de cada um de nós.
-        </p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { AlertCircle, Loader2, ShieldCheck, Terminal, Link as LinkIcon } from 'lucide-react';
+import { AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (userData: any) => void;
@@ -38,7 +38,7 @@ const MOCK_USER = {
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<{msg: string, url?: string} | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,15 +53,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       return;
     }
 
-    // Define o caminho do arquivo
-    const filePath = '/users.json';
-    const absoluteUrl = new URL(filePath, window.location.href).href;
-
     try {
-      const response = await fetch(filePath);
+      const response = await fetch('/users.json');
       
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(`Arquivo não encontrado (HTTP ${response.status})`);
       }
 
       const users = await response.json();
@@ -72,17 +68,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       if (user) {
         const { password: _, ...userData } = user;
         localStorage.setItem('ejc_user', JSON.stringify(userData));
-        setTimeout(() => onLogin(userData), 800);
+        setTimeout(() => onLogin(userData), 500);
       } else {
-        setError({ msg: 'E-mail ou senha incorretos.' });
+        setError('E-mail ou senha incorretos.');
         setIsLoading(false);
       }
     } catch (err: any) {
       console.error('Erro de Autenticação:', err);
-      setError({ 
-        msg: `Falha técnica: ${err.message}`, 
-        url: absoluteUrl 
-      });
+      setError(`Falha ao conectar com o servidor: ${err.message}`);
       setIsLoading(false);
     }
   };
@@ -99,22 +92,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex flex-col gap-2 text-rose-600 text-sm">
-            <div className="flex items-center gap-3">
-              <AlertCircle size={18} className="flex-shrink-0" />
-              <span className="font-bold">{error.msg}</span>
-            </div>
-            {error.url && (
-              <div className="mt-2 bg-slate-900 text-slate-300 p-3 rounded-xl font-mono text-[9px] break-all border border-slate-800">
-                <div className="flex items-center gap-2 mb-1 text-slate-500 uppercase font-black tracking-tighter">
-                  <LinkIcon size={10} /> URL Tentada:
-                </div>
-                {error.url}
-              </div>
-            )}
-            <p className="text-[10px] opacity-70 italic mt-1">
-              Dica: Verifique se o arquivo "users.json" foi enviado para a pasta raiz do servidor.
-            </p>
+          <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm">
+            <AlertCircle size={18} className="flex-shrink-0" />
+            <span className="font-bold">{error}</span>
           </div>
         )}
 
