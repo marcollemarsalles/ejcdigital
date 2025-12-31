@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { Home, Trophy, Users, User, BookOpen, Flame, GraduationCap } from 'lucide-react';
+import { Home, Trophy, BookOpen, User, Flame, GraduationCap, BookMarked } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,9 +13,9 @@ const Layout: React.FC<LayoutProps> = ({ children, onLogout }) => {
 
   const navItems = [
     { path: '/', icon: Home, label: 'Início' },
+    { path: '/liturgia', icon: BookMarked, label: 'Liturgia' },
     { path: '/listao', icon: BookOpen, label: 'Listão' },
     { path: '/gamificacao', icon: Trophy, label: 'Conquistas' },
-    { path: '/comunidade', icon: Users, label: 'Comunidade' },
     { path: '/oracoes', icon: Flame, label: 'Orações' },
     { path: '/formacao', icon: GraduationCap, label: 'Formação' },
   ];

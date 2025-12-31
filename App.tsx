@@ -6,10 +6,10 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Gamification from './pages/Gamification';
-import Community from './pages/Community';
 import Listao from './pages/Listao';
 import Prayers from './pages/Prayers';
 import Formation from './pages/Formation';
+import Liturgy from './pages/Liturgy';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -18,7 +18,12 @@ const App: React.FC = () => {
   useEffect(() => {
     const savedUser = localStorage.getItem('ejc_user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Erro ao ler usuário do localStorage", e);
+        localStorage.removeItem('ejc_user');
+      }
     }
     setIsReady(true);
   }, []);
@@ -32,7 +37,7 @@ const App: React.FC = () => {
     setUser(null);
   };
 
-  if (!isReady) return null;
+  if (!isReady) return <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-400 italic">Carregando aplicativo...</div>;
 
   if (!user) {
     return <Login onLogin={handleLogin} />;
@@ -43,12 +48,12 @@ const App: React.FC = () => {
       <Layout onLogout={handleLogout}>
         <Routes>
           <Route path="/" element={<Home user={user} />} />
+          <Route path="/liturgia" element={<Liturgy />} />
           <Route path="/listao" element={<Listao />} />
           <Route path="/oracoes" element={<Prayers />} />
           <Route path="/formacao" element={<Formation />} />
           <Route path="/perfil" element={<Profile user={user} onLogout={handleLogout} />} />
           <Route path="/gamificacao" element={<Gamification user={user} />} />
-          <Route path="/comunidade" element={<Community />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
