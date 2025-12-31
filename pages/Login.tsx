@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { AlertCircle, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, Loader2, ShieldCheck, Terminal } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (userData: any) => void;
@@ -57,18 +57,22 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }
 
     try {
+      // Tenta buscar o arquivo users.json
       const response = await fetch('users.json');
       
       if (!response.ok) {
-        throw new Error(`Erro de servidor: ${response.status}`);
+        throw new Error(`Servidor respondeu com erro ${response.status}: ${response.statusText}`);
       }
 
       let users;
       try {
         users = await response.json();
       } catch (parseError) {
-        console.error('Erro ao processar JSON:', parseError);
-        throw new Error('Banco de dados corrompido.');
+        throw new Error(`Erro ao ler dados (JSON malformado): ${parseError instanceof Error ? parseError.message : String(parseError)}`);
+      }
+
+      if (!Array.isArray(users)) {
+        throw new Error('A estrutura do arquivo de usuários não é uma lista (Array).');
       }
 
       const user = users.find(
@@ -86,8 +90,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         setIsLoading(false);
       }
     } catch (err: any) {
-      console.error('Erro na autenticação:', err);
-      setError('Erro ao conectar. Tente o usuário de teste (mariasilva@ejc.com / 123)');
+      console.error('Erro detalhado na autenticação:', err);
+      // Exibe o erro exato para diagnóstico
+      setError(`Falha na conexão: ${err.message || 'Erro desconhecido'}`);
       setIsLoading(false);
     }
   };
@@ -104,9 +109,18 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 text-rose-600 text-sm animate-in fade-in slide-in-from-top-2">
-            <AlertCircle size={18} className="flex-shrink-0" />
-            <span className="font-medium">{error}</span>
+          <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex flex-col gap-2 text-rose-600 text-sm animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center gap-3">
+              <AlertCircle size={18} className="flex-shrink-0" />
+              <span className="font-bold">Erro de Acesso</span>
+            </div>
+            <div className="bg-white/50 p-2 rounded-lg border border-rose-100 font-mono text-[10px] leading-tight flex gap-2">
+              <Terminal size={12} className="shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+            <p className="text-[10px] opacity-70 italic mt-1">
+              Verifique se os arquivos .json estão na mesma pasta que o index.html no servidor.
+            </p>
           </div>
         )}
 
@@ -155,15 +169,15 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 flex gap-3 items-center">
             <ShieldCheck size={20} className="text-amber-600 shrink-0" />
             <div className="text-[10px] text-amber-800 leading-tight">
-              <strong>Acesso de Emergência:</strong><br />
-              Se o servidor falhar, use: <em>mariasilva@ejc.com</em> / <em>123</em>
+              <strong>Acesso de Emergência (Offline):</strong><br />
+              Use: <em>mariasilva@ejc.com</em> / <em>123</em>
             </div>
           </div>
         </div>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-slate-500">
-            Problemas com o acesso? <button className="text-emerald-600 font-semibold" onClick={() => window.location.reload()}>Atualizar Página</button>
+          <p className="text-xs text-slate-400">
+            Dica: Se o erro persistir, use o acesso de emergência acima.
           </p>
         </div>
       </div>
